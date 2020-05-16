@@ -32,8 +32,7 @@
             console.log("ahhh")
             const mouseX = event.clientX - rect.left - root.scrollLeft
             // const mouseY = event.clientY - rect.top - root.scrollTop
-            paddleX = mouseX;
-            console.log(mouseX)
+            paddleX = mouseX - PADDLE_WIDTH / 2;
         }
         function moveAll() {
 
@@ -46,6 +45,9 @@
             }
             if (ballY > canvas.height || ballY <= 0) {
                 ballSpeedY *= -1
+            }
+            if (ballY > canvas.height) {
+                ballReset()
             }
         }
 
@@ -73,6 +75,11 @@
         function updateAll() {
             moveAll();
             drawAll();
+        }
+        function ballReset() {
+            const canvas = document.getElementById('gameCanvas');
+            ballX = 100
+            ballY = 100
         }
     </script>
 </body>
