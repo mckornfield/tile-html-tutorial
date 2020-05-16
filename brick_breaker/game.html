@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+</head>
+
+<body>
+    <canvas id="gameCanvas" width="800" height="600"></canvas>
+    <script>
+        let ballX = 100
+        let ballY = 100
+        let ballSpeedX = 5;
+        let ballSpeedY = 3;
+        const PADDLE_WIDTH = 100;
+        const PADDLE_THICKNESS = 10;
+        let paddleX = 400;
+        window.onload = () => {
+
+            const framesPerSecond = 30;
+            setInterval(updateAll, 1000 / framesPerSecond);
+            const canvas = document.getElementById('gameCanvas');
+            canvas.addEventListener('mousemove', updateMousePos)
+
+        }
+
+        function updateMousePos(event) {
+            const canvas = document.getElementById('gameCanvas');
+            const rect = canvas.getBoundingClientRect();
+            const root = document.documentElement
+            console.log("ahhh")
+            const mouseX = event.clientX - rect.left - root.scrollLeft
+            // const mouseY = event.clientY - rect.top - root.scrollTop
+            paddleX = mouseX;
+            console.log(mouseX)
+        }
+        function moveAll() {
+
+            const canvas = document.getElementById('gameCanvas');
+            ballX += ballSpeedX;
+            ballY += ballSpeedY;
+
+            if (ballX > canvas.width || ballX <= 0) {
+                ballSpeedX *= -1;
+            }
+            if (ballY > canvas.height || ballY <= 0) {
+                ballSpeedY *= -1
+            }
+        }
+
+        function drawAll() {
+            const canvas = document.getElementById('gameCanvas');
+            colorRect(0, 0, canvas.width, canvas.height, 'black')
+            colorCircle(ballX, ballY, 10, 'red')
+            colorRect(paddleX, canvas.height - PADDLE_THICKNESS, PADDLE_WIDTH, PADDLE_THICKNESS, 'white')
+        }
+
+        function colorRect(topLeftX, topLeftY, boxWidth, boxHeight, fillColor) {
+            const canvas = document.getElementById('gameCanvas');
+            const canvasContext = canvas.getContext('2d')
+            canvasContext.fillStyle = fillColor
+            canvasContext.fillRect(topLeftX, topLeftY, boxWidth, boxHeight)
+        }
+        function colorCircle(x, y, r, color) {
+            const canvas = document.getElementById('gameCanvas');
+            const canvasContext = canvas.getContext('2d')
+            canvasContext.fillStyle = color
+            canvasContext.beginPath();
+            canvasContext.arc(x, y, 10, 0, Math.PI * 2, true)
+            canvasContext.fill();
+        }
+        function updateAll() {
+            moveAll();
+            drawAll();
+        }
+    </script>
+</body>
+
+</html>
